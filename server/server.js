@@ -14,7 +14,7 @@ app.post('/todos', (req, res) => {
     }).save().then(doc => {
         res.send(doc);
     }, e => {
-        res.status(400).send(e);
+        res.status(400).send();
     });
 });
 
@@ -22,7 +22,7 @@ app.get('/todos', (req, res) => {
     Todo.find().then(todos => {
         res.send({ todos });
     }, e => {
-        res.status(400).send(e);
+        res.status(400).send();
     });
 });
 
@@ -31,7 +31,7 @@ app.get('/todos/:id', (req, res) => {
         if (!todo)
             return res.status(404).send('ID not found');
         res.send(todo);
-    }, e => res.status(400).send(e.name));
+    }, e => res.status(400).send());
 });
 
 app.listen(3000, () => {
