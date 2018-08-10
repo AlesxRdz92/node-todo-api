@@ -89,3 +89,18 @@ describe('GET /todos/id', () => {
             }).end(done);
     });
 });
+
+describe('DELETE /todos/id', () => {
+    it('should delete one element', done => {
+        request(app).delete
+
+    });
+
+    it('should return a 400 code', done => {
+
+    });
+
+    it('should return a 404 code and !null', done => {
+
+    });
+});
