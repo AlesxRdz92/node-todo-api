@@ -1,6 +1,6 @@
 const expect = require('expect');
 const request = require('supertest');
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 
 const { app } = require('./../server');
 const { Todo } = require('./../models/todo');
@@ -52,40 +52,40 @@ describe('POST /todos', () => {
                 }).catch(e => done(e));
             });
     });
-}); 
+});
 
-describe('GET /todos', () =>{
+describe('GET /todos', () => {
     it('should get all todos', done => {
         request(app).get('/todos')
-        .expect(200)
-        .expect(res => {
-            expect(res.body.todos.length).toBe(2);
-        }).end(done);
+            .expect(200)
+            .expect(res => {
+                expect(res.body.todos.length).toBe(2);
+            }).end(done);
     });
 });
 
 describe('GET /todos/id', () => {
     it('should get one element', done => {
         request(app).get(`/todos/${todos[0]._id.toHexString()}`)
-        .expect(200)
-        .expect(res => {
-            expect(res.body.text).toBe(todos[0].text);
-        }).end(done);
+            .expect(200)
+            .expect(res => {
+                expect(res.body.text).toBe(todos[0].text);
+            }).end(done);
     });
 
     it('should return a 400 code', done => {
-        let id = 'malformedId';
+        let id = '123abc';
         request(app).get(`/todos/${id}`)
-        .expect(400)
-        .end(done);
+            .expect(400)
+            .end(done);
     });
 
     it('should return a 404 code and ID not found', done => {
-        let id = '6b6c511bd72d918194c76bff';
+        let id = new ObjectID().toHexString();
         request(app).get(`/todos/${id}`)
-        .expect(404)
-        .expect(res => {
-            expect(res.text).toBe('ID not found');
-        }).end(done);
+            .expect(404)
+            .expect(res => {
+                expect(res.text).toBe('ID not found');
+            }).end(done);
     });
 });
