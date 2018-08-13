@@ -92,15 +92,34 @@ describe('GET /todos/id', () => {
 
 describe('DELETE /todos/id', () => {
     it('should delete one element', done => {
-        request(app).delete
-
+        let id = todos[1]._id.toHexString();
+        request(app).delete(`/todos/${id}`)
+        .expect(200)
+        .expect(res => {
+            expect(res.body.todo._id).toBe(id);
+        })
+        .end((err, res) => {
+            if(err)
+             return done(err);
+            Todo.findById(id).then(todo => {
+                expect(todo).toBeNull;
+                done();
+            }).catch(e => done(e));
+        });
     });
 
     it('should return a 400 code', done => {
+        let id = '123abc';
+        request(app).delete(`/todos/${id}`)
+        .expect(400)
+        .end(done);
 
     });
 
-    it('should return a 404 code and !null', done => {
-
+    it('should return a 404 code', done => {
+        let id = new ObjectID().toHexString();
+        request(app).delete(`/todos/${id}`)
+        .expect(404)
+        .end(done);
     });
 });

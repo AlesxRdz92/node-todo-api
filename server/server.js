@@ -38,7 +38,7 @@ app.delete('/todos/:id', (req, res) => {
     Todo.findByIdAndRemove(req.params.id).then(todo => {
         if(!todo)
             return res.status(404).send('ID not found');
-        res.send(`Todo eliminated ${todo}`);
+        res.send({todo});
     }, e => res.status(400).send());
 });
 
