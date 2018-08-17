@@ -4,22 +4,11 @@ const { ObjectID } = require('mongodb');
 
 const { app } = require('./../server');
 const { Todo } = require('./../models/todo');
+const { Users } = require('./../models/user');
+const { todos, populateTodos, populateUsers, users } = require('./seed/seed');
 
-const todos = [{
-    _id: new ObjectID(),
-    text: 'First test todo'
-}, {
-    _id: new ObjectID(),
-    text: 'Second test todo',
-    completed: true,
-    completedAt: 4
-}];
-
-beforeEach(done => {
-    Todo.remove({}).then(() => {
-        return Todo.insertMany(todos);
-    }).then(() => done());
-});
+beforeEach(populateUsers);
+beforeEach(populateTodos);
 
 describe('POST /todos', () => {
     it('should create a new todo', done => {
@@ -163,7 +152,7 @@ describe('PATCH /todos/id', () => {
             .end(done);
     });
 
-    it('should return a 400 error code', done => {
+    it('should return a 404 error code', done => {
         let id = new ObjectID().toHexString();
         request(app).patch(`/todos/${id}`)
             .send({ text: 'test' })
